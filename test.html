@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Survival Simulation Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .test-section {
+            background: #333;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px solid #666;
+        }
+        .result {
+            background: #444;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #ff6b6b;
+        }
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #ff5252;
+        }
+        input, select {
+            padding: 8px;
+            margin: 5px;
+            border-radius: 3px;
+            border: 1px solid #666;
+            background: #444;
+            color: white;
+        }
+        .simulation-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #222;
+            border-radius: 10px;
+        }
+        .human, .coffin {
+            width: 100px;
+            height: 150px;
+            background: #666;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            text-align: center;
+        }
+        .health-message {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .moving { animation: moveTowardCoffin 2s ease-in-out; }
+        .in-coffin { opacity: 0.7; filter: blur(1px); transform: scale(0.8); }
+        .dead { opacity: 0; visibility: hidden; }
+        .health-good { background: #2d5a2d; color: #00ff00; }
+        .health-warning { background: #5a4a2d; color: #ffaa00; }
+        .health-danger { background: #5a2d2d; color: #ff0000; }
+        
+        @keyframes moveTowardCoffin {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(60%); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Health Survival Simulation Test</h1>
+    
+    <div class="test-section">
+        <h2>Test calculateSurvivalDays() Function</h2>
+        <div>
+            <label>Age: <input type="number" id="testAge" value="25" min="1" max="120"></label>
+            <label>Foods: <select id="testFoods" multiple>
+                <option value="apple">Apple</option>
+                <option value="banana">Banana</option>
+                <option value="pizza">Pizza</option>
+                <option value="burger">Burger</option>
+                <option value="spinach">Spinach</option>
+                <option value="salmon">Salmon</option>
+                <option value="soda">Soda</option>
+                <option value="candy">Candy</option>
+            </select></label>
+            <button onclick="testCalculateSurvival()">Calculate Survival Days</button>
+        </div>
+        <div id="survivalResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test runSimulation() Function</h2>
+        <div>
+            <label>Survival Days: <input type="number" id="testDays" value="20" min="0" max="100"></label>
+            <button onclick="testRunSimulation()">Run Simulation</button>
+        </div>
+        
+        <div class="simulation-container">
+            <div id="humanSim" class="human">Human</div>
+            <div id="coffin" class="coffin">Coffin</div>
+        </div>
+        
+        <div id="healthMessage" class="health-message">Health status will appear here</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Quick Tests</h2>
+        <button onclick="testGoodHealth()">Test Good Health (>15 days)</button>
+        <button onclick="testWarningHealth()">Test Warning Health (1-15 days)</button>
+        <button onclick="testDangerHealth()">Test Danger Health (0 days)</button>
+    </div>
+
+    <script>
+        // Import the functions from the main script
+        // For testing purposes, we'll define them here
+        function calculateSurvivalDays(age, foods) {
+            // Age factor calculation
+            let ageFactor;
+            if (age < 18) {
+                ageFactor = 45;
+            } else if (age < 30) {
+                ageFactor = 32;
+            } else if (age < 50) {
+                ageFactor = 28;
+            } else if (age < 70) {
+                ageFactor = 15;
+            } else {
+                ageFactor = 2;
+            }
+            
+            // Food scoring
+            let foodScore = 0;
+            foods.forEach(food => {
+                // Healthy foods (fruits, vegetables, healthy snacks)
+                if (['apple', 'banana', 'orange', 'mango', 'grapes', 'pineapple', 'strawberry', 'blueberry', 'watermelon',
+                     'spinach', 'carrot', 'broccoli', 'tomato', 'lettuce', 'kale', 'cauliflower', 'cucumber', 'bellpepper', 'sweetpotato',
+                     'nuts', 'yogurt', 'oatmeal', 'salmon', 'quinoa', 'avocado', 'chicken', 'tofu'].includes(food)) {
+                    foodScore += 100;
+                }
+                // Unhealthy foods (fast food, junk food)
+                else if (['pizza', 'burger', 'fries', 'hotdog', 'friedchicken', 'taco', 'nuggets',
+                          'chips', 'soda', 'candy', 'cookies', 'icecream', 'doughnut', 'chocolate', 'energydrink'].includes(food)) {
+                    foodScore -= 30;
+                }
+            });
+            
+            // Calculate total health score
+            const totalHealthScore = ageFactor + foodScore;
+            
+            // Convert to days: multiply by 5, floor, add random 0-4
+            let survivalDays = Math.floor(totalHealthScore * 5) + Math.floor(Math.random() * 5);
+            
+            // Cap at maximum 40 years (365 * 40 = 14600 days)
+            survivalDays = Math.min(survivalDays, 14600);
+            
+            // Ensure non-negative
+            survivalDays = Math.max(0, survivalDays);
+            
+            return survivalDays;
+        }
+
+                 function runSimulation(days) {
+             // Get DOM elements
+             const humanSim = document.getElementById('humanSim');
+             const coffin = document.getElementById('coffin');
+             const healthMessage = document.getElementById('healthMessage');
+             
+             // Helper function to format time display
+             function formatTimeDisplay(totalDays) {
+                 if (totalDays === 0) return '0 days';
+                 
+                 const years = Math.floor(totalDays / 365);
+                 const remainingDays = totalDays % 365;
+                 const months = Math.floor(remainingDays / 30);
+                 const finalDays = remainingDays % 30;
+                 
+                 let timeDisplay = '';
+                 if (years > 0) {
+                     timeDisplay += `${years} year${years > 1 ? 's' : ''}`;
+                     if (months > 0 || finalDays > 0) {
+                         timeDisplay += ', ';
+                     }
+                 }
+                 if (months > 0) {
+                     timeDisplay += `${months} month${months > 1 ? 's' : ''}`;
+                     if (finalDays > 0) {
+                         timeDisplay += ', ';
+                     }
+                 }
+                 if (finalDays > 0 || (years === 0 && months === 0)) {
+                     timeDisplay += `${finalDays} day${finalDays !== 1 ? 's' : ''}`;
+                 }
+                 
+                 // If survival is very short, show in days only
+                 if (totalDays < 30) {
+                     timeDisplay = `${totalDays} day${totalDays !== 1 ? 's' : ''}`;
+                 }
+                 
+                 return timeDisplay;
+             }
+             
+             // Remove all existing classes first
+             if (humanSim) {
+                 humanSim.classList.remove('moving', 'in-coffin', 'dead');
+             }
+             if (coffin) {
+                 coffin.classList.remove('moving', 'in-coffin', 'dead');
+             }
+             if (healthMessage) {
+                 healthMessage.classList.remove('health-good', 'health-warning', 'health-danger');
+             }
+             
+             // Apply logic based on survival days
+             if (days > 15) {
+                 // Human moves toward coffin but doesn't enter
+                 if (humanSim) {
+                     humanSim.classList.add('moving');
+                 }
+                 if (healthMessage) {
+                     healthMessage.classList.add('health-good');
+                     const timeDisplay = formatTimeDisplay(days);
+                     healthMessage.textContent = `You have ${timeDisplay} of survival! Your healthy choices are paying off!`;
+                 }
+             } else if (days >= 1 && days <= 15) {
+                 // Human ends up inside transparent coffin
+                 if (humanSim) {
+                     humanSim.classList.add('in-coffin');
+                 }
+                 if (coffin) {
+                     coffin.classList.add('in-coffin');
+                 }
+                 if (healthMessage) {
+                     healthMessage.classList.add('health-warning');
+                     const timeDisplay = formatTimeDisplay(days);
+                     healthMessage.textContent = `Warning: Only ${timeDisplay} left! Your health is declining rapidly!`;
+                 }
+             } else if (days === 0) {
+                 // Only coffin shown, human is dead
+                 if (humanSim) {
+                     humanSim.classList.add('dead');
+                 }
+                 if (coffin) {
+                     coffin.classList.add('dead');
+                 }
+                 if (healthMessage) {
+                     healthMessage.classList.add('health-danger');
+                     healthMessage.textContent = 'DEATH: Your time has come! The reaper claims another soul!';
+                 }
+             }
+         }
+
+                 function testCalculateSurvival() {
+             const age = parseInt(document.getElementById('testAge').value);
+             const foodSelect = document.getElementById('testFoods');
+             const selectedFoods = Array.from(foodSelect.selectedOptions).map(option => option.value);
+             
+             if (selectedFoods.length === 0) {
+                 alert('Please select at least one food item');
+                 return;
+             }
+             
+             const survivalDays = calculateSurvivalDays(age, selectedFoods);
+             
+             // Calculate years and remaining days
+             const years = Math.floor(survivalDays / 365);
+             const remainingDays = survivalDays % 365;
+             const months = Math.floor(remainingDays / 30);
+             const finalDays = remainingDays % 30;
+             
+             // Format the time display
+             let timeDisplay = '';
+             if (years > 0) {
+                 timeDisplay += `${years} year${years > 1 ? 's' : ''}`;
+                 if (months > 0 || finalDays > 0) {
+                     timeDisplay += ', ';
+                 }
+             }
+             if (months > 0) {
+                 timeDisplay += `${months} month${months > 1 ? 's' : ''}`;
+                 if (finalDays > 0) {
+                     timeDisplay += ', ';
+                 }
+             }
+             if (finalDays > 0 || (years === 0 && months === 0)) {
+                 timeDisplay += `${finalDays} day${finalDays !== 1 ? 's' : ''}`;
+             }
+             
+             // If survival is very short, show in days only
+             if (survivalDays < 30) {
+                 timeDisplay = `${survivalDays} day${survivalDays !== 1 ? 's' : ''}`;
+             }
+             
+             document.getElementById('survivalResult').innerHTML = `
+                 <h3>Survival Calculation Results:</h3>
+                 <p><strong>Age:</strong> ${age}</p>
+                 <p><strong>Selected Foods:</strong> ${selectedFoods.join(', ')}</p>
+                 <p><strong>Calculated Survival Time:</strong> ${timeDisplay}</p>
+                 <p><strong>Total Days:</strong> ${survivalDays.toLocaleString()}</p>
+                 <h4>Time Breakdown:</h4>
+                 <p><strong>Years:</strong> ${years}</p>
+                 <p><strong>Months:</strong> ${months}</p>
+                 <p><strong>Days:</strong> ${finalDays}</p>
+                 <p><strong>Age Factor:</strong> ${age < 18 ? 45 : age < 30 ? 32 : age < 50 ? 28 : age < 70 ? 15 : 2}</p>
+                 <p><strong>Food Score:</strong> ${selectedFoods.reduce((score, food) => {
+                     if (['apple', 'banana', 'orange', 'mango', 'grapes', 'pineapple', 'strawberry', 'blueberry', 'watermelon',
+                          'spinach', 'carrot', 'broccoli', 'tomato', 'lettuce', 'kale', 'cauliflower', 'cucumber', 'bellpepper', 'sweetpotato',
+                          'nuts', 'yogurt', 'oatmeal', 'salmon', 'quinoa', 'avocado', 'chicken', 'tofu'].includes(food)) {
+                         return score + 100;
+                     } else if (['pizza', 'burger', 'fries', 'hotdog', 'friedchicken', 'taco', 'nuggets',
+                                'chips', 'soda', 'candy', 'cookies', 'icecream', 'doughnut', 'chocolate', 'energydrink'].includes(food)) {
+                         return score - 30;
+                     }
+                     return score;
+                 }, 0)}</p>
+             `;
+         }
+
+        function testRunSimulation() {
+            const days = parseInt(document.getElementById('testDays').value);
+            runSimulation(days);
+        }
+
+        function testGoodHealth() {
+            runSimulation(25);
+        }
+
+        function testWarningHealth() {
+            runSimulation(8);
+        }
+
+        function testDangerHealth() {
+            runSimulation(0);
+        }
+
+        // Initialize test
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Health Survival Simulation Test Page Loaded');
+            console.log('Available functions: calculateSurvivalDays(age, foods), runSimulation(days)');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,968 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+ }
+ 
+ 
+ body {
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(1200px 800px at 50% 30%, #0c0010 0%, #000 60%), linear-gradient(135deg, #000000 0%, #090014 50%, #000000 100%);
+    color: #e4e4ff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+ }
+ 
+ 
+ /* Fog animation background */
+ .fog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+ }
+ 
+ 
+ .fog1 {
+    animation: fogMove1 20s infinite linear;
+    opacity: 0.3;
+ }
+ 
+ 
+ .fog2 {
+    animation: fogMove2 25s infinite linear;
+    opacity: 0.2;
+    animation-delay: -10s;
+ }
+ 
+ 
+ .fog3 {
+    animation: fogMove3 30s infinite linear;
+    opacity: 0.1;
+    animation-delay: -20s;
+ }
+ 
+ 
+ @keyframes fogMove1 {
+    0% { transform: translateX(-100%) translateY(0) scale(1); }
+    100% { transform: translateX(100%) translateY(-10px) scale(1.1); }
+ }
+ 
+ 
+ @keyframes fogMove2 {
+    0% { transform: translateX(100%) translateY(20px) scale(0.9); }
+    100% { transform: translateX(-100%) translateY(-20px) scale(1.2); }
+ }
+ 
+ 
+ @keyframes fogMove3 {
+    0% { transform: translateX(-50%) translateY(10px) scale(1.1); }
+    100% { transform: translateX(50%) translateY(-30px) scale(0.8); }
+ }
+ 
+ 
+ /* Page transitions */
+ .page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    pointer-events: none;
+ }
+ 
+ 
+ .page.active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+ }
+ 
+ 
+ /* Hide non-active pages completely to avoid overlay gaps */
+ .page:not(.active) {
+    display: none;
+ }
+ 
+ 
+ /* Make Page 1 scrollable at the page level (not inside the form container) */
+ #page1.page {
+    position: static;
+    display: block;
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    justify-content: flex-start;
+    padding-bottom: 80px;
+ }
+ 
+ 
+ /* Make Page 3 scrollable so results and visuals fit vertically */
+ #page3.page {
+    position: static;
+    display: block;
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    padding: 0;
+ }
+ 
+ 
+ /* Ensure page 3 primary sections stay centered */
+ #page3 .results-scroll,
+ #page3 .survival-slider-wrap,
+ #page3 .navigation {
+    margin-left: auto;
+    margin-right: auto;
+ }
+ 
+ 
+ /* Remove excessive top spacing on page 3 */
+ #page3 .results-scroll { margin-top: 0; }
+ #page3 .survival-slider-wrap { margin-top: 8px; }
+ #page3 .survival-slider-wrap { position: relative; height: 260px; }
+ #page3 #threeScene {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 180px;
+    z-index: 6;
+    pointer-events: none;
+ }
+ #page3 .bottom-visual { display: none; }
+ 
+ 
+ /* Titles */
+ .title {
+    font-family: inherit;
+    font-size: 2.4rem;
+    color: #9bff00;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 10px #9bff00, 0 0 24px rgba(155, 255, 0, 0.7);
+    animation: titleGlow 3s ease-in-out infinite alternate;
+ }
+ 
+ 
+ @keyframes titleGlow {
+    from { text-shadow: 0 0 10px #9bff00, 0 0 24px rgba(155, 255, 0, 0.7); }
+    to { text-shadow: 0 0 20px #9bff00, 0 0 46px rgba(155, 255, 0, 1), 0 0 64px rgba(155, 255, 0, 1); }
+ }
+ 
+ 
+ /* Scroll containers */
+ .page1-container {
+    width: 100%;
+    max-width: 1100px;
+    padding: 2rem 1rem;
+ }
+ 
+ 
+ /* Use Poppins everywhere */
+ 
+ 
+ .scroll-container::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: linear-gradient(45deg, #ff0000, #8b0000, #ff0000);
+    border-radius: 18px;
+    z-index: -1;
+    animation: borderGlow 2s ease-in-out infinite alternate;
+ }
+ 
+ 
+ @keyframes borderGlow {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+ }
+ 
+ 
+ /* Form styles */
+ .haunted-form {
+    width: 100%;
+ }
+ 
+ 
+ .full-bleed-form .form-group {
+    background: rgba(10, 0, 20, 0.6);
+    border: 1px solid rgba(155, 255, 0, 0.2);
+    border-radius: 10px;
+    padding: 1rem;
+ }
+ 
+ 
+ .form-group {
+    margin-bottom: 1.5rem;
+ }
+ 
+ 
+ label {
+    display: block;
+    font-size: 0.9rem;
+    color: #9bff00;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 10px rgba(155, 255, 0, 0.25);
+ }
+ 
+ 
+ input[type="text"],
+ input[type="number"],
+ input[type="file"],
+ select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #221;
+    border-radius: 8px;
+    background: rgba(6, 0, 14, 0.9);
+    color: #e4e4ff;
+    font-size: 0.9rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+ }
+ 
+ 
+ input[type="text"]:focus,
+ input[type="number"]:focus,
+ select:focus {
+    outline: none;
+    border-color: #9bff00;
+    box-shadow: 0 0 15px rgba(155, 255, 0, 0.4);
+    background: rgba(10, 0, 20, 0.95);
+ }
+ 
+ 
+ /* Radio buttons */
+ .radio-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+ }
+ 
+ 
+ .radio-group label {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+ }
+ 
+ 
+ .radio-group input[type="radio"] {
+    width: auto;
+    margin-right: 8px;
+    accent-color:#9bff00;
+
+ }
+ 
+ 
+ /* Food categories */
+ .food-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+ }
+ 
+ 
+ .food-category {
+    background: rgba(0, 10, 0, 0.25);
+    border: 1px solid rgba(50, 150, 0, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+ }
+ 
+ 
+ .food-category h3 {
+    font-family: 'Nosifer', cursive;
+    color: #9bff00;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+ }
+ 
+ 
+ .food-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+ }
+ 
+ 
+ .food-checkboxes label {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+ }
+ 
+ 
+ .food-checkboxes label:hover {
+    color: #9bff00;
+    text-shadow: 0 0 10px rgba(155, 255, 0, 0.6);
+ }
+ 
+ 
+ .food-checkboxes input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+    accent-color: #9bff00;
+    transform: scale(1.2);
+ }
+ 
+ 
+ /* Selected foods display */
+ .selected-foods {
+    margin: 1rem 0;
+    min-height: 40px;
+    padding: 10px;
+    border: 2px dashed rgba(155, 255, 0, 0.3);
+    border-radius: 8px;
+    background: rgba(10, 0, 20, 0.5);
+ }
+ 
+ 
+ .food-chip {
+    display: inline-block;
+    background: linear-gradient(45deg, #093, #9bff00);
+    color: #071007;
+    padding: 5px 12px;
+    margin: 5px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    box-shadow: 0 0 10px rgba(155, 255, 0, 0.6);
+    animation: chipGlow 2s ease-in-out infinite alternate;
+ }
+ 
+ 
+ @keyframes chipGlow {
+    from { box-shadow: 0 0 10px rgba(155, 255, 0, 0.5); }
+    to { box-shadow: 0 0 20px rgba(155, 255, 0, 0.85); }
+ }
+ 
+ 
+ /* Buttons */
+ .dagger-btn,
+ .skull-btn,
+ .broken-arrow,
+ .ghost-arrow,
+ .bloody-cross {
+    background: linear-gradient(45deg, #093, #9bff00);
+    border: 2px solid rgba(155, 255, 0, 0.5);
+    color: #071007;
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-family: 'Press Start 2P', cursive;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: none;
+    box-shadow: 0 5px 15px rgba(155, 255, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+ }
+ 
+ 
+ .dagger-btn::before,
+ .skull-btn::before,
+ .broken-arrow::before,
+ .ghost-arrow::before,
+ .bloody-cross::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #9bff00, #093, #9bff00);
+    z-index: -1;
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+ }
+ 
+ 
+ .dagger-btn:hover::before,
+ .skull-btn:hover::before,
+ .broken-arrow:hover::before,
+ .ghost-arrow:hover::before,
+ .bloody-cross:hover::before {
+    opacity: 1;
+ }
+ 
+ 
+ .dagger-btn:hover,
+ .skull-btn:hover,
+ .broken-arrow:hover,
+ .ghost-arrow:hover,
+ .bloody-cross:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(155, 255, 0, 0.35);
+    animation: buttonShake 0.5s ease-in-out;
+ }
+ 
+ 
+ @keyframes buttonShake {
+    0%, 100% { transform: translateY(-2px) scale(1.05) rotate(0deg); }
+    25% { transform: translateY(-2px) scale(1.05) rotate(-1deg); }
+    75% { transform: translateY(-2px) scale(1.05) rotate(1deg); }
+ }
+ 
+ 
+ /* Page 2 specific styles */
+ .summary-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1000px;
+    height: 60vh; /* Reduced from 70vh */
+ }
+ 
+ 
+ .human-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, rgba(0, 40, 10, 0.5) 0%, transparent 70%);
+    border-radius: 15px;
+    border: 2px solid rgba(155, 255, 0, 0.2);
+    height: 60%; /* Reduced to allow spacing */
+    min-height: 300px;
+    position: relative;
+    overflow: hidden;
+    margin: auto; /* Center the container vertically if needed */
+ }
+ 
+ 
+ .spline-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+ }
+ 
+ 
+ spline-viewer {
+    width: 100%;
+    height: 100%;
+ }
+ 
+ 
+ #threeSceneSummary {
+    width: 100%;
+    height: 100%;
+ }
+ 
+ 
+ .human-figure {
+    width: 150px;
+    height: 300px;
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
+    animation: humanBreathe 4s ease-in-out infinite;
+ }
+ 
+ 
+ @keyframes humanBreathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+ }
+ 
+ 
+ .summary-scroll {
+    background: linear-gradient(45deg, #1a101a 0%, #0e0a12 100%);
+    border: 3px solid #8b0000;
+    border-radius: 15px;
+    padding: 2rem;
+    overflow-y: auto;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+    height: 80%; /* Reduced to match left container */
+    margin: auto; /* Vertically centers if parent allows */
+ }
+ 
+ 
+ .scroll-content h2 {
+    font-family: 'Nosifer', cursive;
+    color: #ff0000;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+ }
+ 
+ 
+ /* Page 3 specific styles */
+ /* removed top survival scene */
+ 
+ 
+ .coffin-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
+ 
+ 
+ .coffin {
+    width: 200px;
+    height: 300px;
+    transform: rotate(-20deg);
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.8));
+    z-index: 2;
+ }
+ 
+ 
+ .coffin.transparent #coffinPath {
+    opacity: 0.3;
+    fill: rgba(0, 60, 20, 0.3);
+ }
+ 
+ 
+ .human-in-coffin {
+    position: absolute;
+    width: 80px;
+    height: 160px;
+    transform: rotate(-20deg);
+    z-index: 1;
+    opacity: 0;
+    transition: all 0.5s ease;
+ }
+ 
+ 
+ .human-in-coffin.visible {
+    opacity: 1;
+ }
+ 
+ 
+ .walking-human {
+    position: absolute;
+    left: 10%;
+    width: 100px;
+    height: 200px;
+    filter: drop-shadow(0 0 20px rgba(155, 255, 0, 0.5));
+    transition: all 2s ease;
+    z-index: 3;
+ }
+ 
+ 
+ .walking-human.walking {
+    left: 40%;
+    animation: walk 2s ease-in-out;
+ }
+ 
+ 
+ @keyframes walk {
+    0%, 100% { transform: translateX(0) scale(1); }
+    25% { transform: translateX(20px) scale(1.02); }
+    50% { transform: translateX(40px) scale(0.98); }
+    75% { transform: translateX(60px) scale(1.02); }
+ }
+ 
+ 
+ .results-scroll {
+    background: linear-gradient(45deg, #1a101a 0%, #0e0a12 100%);
+    border: 3px solid #8b0000;
+    border-radius: 15px;
+    padding: 0.75rem 2rem 2rem 2rem;
+    margin: 0 0 2rem 0;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+    max-height: none;
+    overflow: visible;
+    border-top-width: 3px; /* ensure no margin-collapse from first child */
+ }
+ 
+ 
+ .scene-control {
+    display: none;
+ }
+ 
+ 
+ .scene-slider {
+    width: 80%;
+    appearance: none;
+    height: 6px;
+    background: linear-gradient(90deg, #4a0000, #ff0000);
+    border-radius: 999px;
+    outline: none;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+ }
+ 
+ 
+ .scene-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ff6b6b 0%, #8b0000 70%);
+    border: 2px solid #ffcccc;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+ }
+ 
+ 
+ .survival-meter {
+    position: relative;
+    width: 100%;
+    height: 14px;
+    background: rgba(42, 24, 16, 0.6);
+    border: 2px solid #8b0000;
+    border-radius: 999px;
+    margin: 0.5rem 0 1rem 0;
+    overflow: hidden;
+ }
+ 
+ 
+ .survival-meter-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #4a0000, #ff0000);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    transition: width 0.4s ease;
+ }
+ 
+ 
+ .results-scroll h2 {
+    font-family: inherit;
+    color: #ff0000;
+    text-align: center;
+    margin: 0 0 1rem 0;
+    font-size: 1.8rem;
+ }
+ 
+ 
+ /* Survival slider styling */
+ .survival-slider {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 12px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #4a0000, #ff0000);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.6), 0 0 12px rgba(255,0,0,0.35);
+    position: relative;
+    z-index: 3;
+ }
+ .survival-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ff6b6b 0%, #8b0000 70%);
+    border: 2px solid #ffcccc;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+ }
+ .survival-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0;
+    height: 0;
+ }
+ 
+ 
+ .survival-slider-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 220px;
+ }
+ 
+ 
+ .slider-side { display: none; }
+ 
+ 
+ /* Removed bottom visual block */
+ 
+ 
+ #threeScene canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: auto;
+ }
+ 
+ 
+ .bottom-human, .bottom-coffin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+ }
+ 
+ 
+ .bottom-coffin { position: relative; }
+ 
+ 
+ .bottom-human svg { width: 60px; height: 120px; filter: drop-shadow(0 0 12px rgba(255,255,255,0.6)); }
+ .bottom-coffin svg { width: 80px; height: 120px; filter: drop-shadow(0 0 16px rgba(139,0,0,0.6)); }
+ 
+ 
+ .bottom-track {
+    position: relative;
+    height: 10px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #4a0000, #ff0000);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.6), 0 0 15px rgba(255,0,0,0.35);
+ }
+ 
+ 
+ .moving-human {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 80px;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.6));
+    transition: left 1.2s ease;
+ }
+ 
+ 
+ /* When walking, move towards coffin with transform for smoother perception */
+ .moving-human.walking {
+    transition: left 1.2s ease, transform 1.2s ease;
+ }
+ 
+ 
+ .human-in-coffin-bottom {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-20deg);
+    width: 40px;
+    height: 80px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+ }
+ 
+ 
+ /* Navigation */
+ .navigation {
+    display: flex;
+    gap: 20px;
+    margin-top: 2rem;
+    justify-content: center;
+ }
+ 
+ 
+ /* Photo preview */
+ .photo-preview {
+    margin-top: 10px;
+    text-align: center;
+ }
+ 
+ 
+ .photo-preview img {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 10px;
+    border: 3px solid #8b0000;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    object-fit: cover;
+ }
+ 
+ 
+ /* Responsive design */
+ @media (max-width: 768px) {
+    .summary-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        height: auto;
+    }
+   
+    .human-container {
+        height: 260px;
+    }
+   
+    .food-categories {
+        grid-template-columns: 1fr;
+    }
+   
+    .title {
+        font-size: 2rem;
+    }
+   
+    .navigation {
+        flex-direction: column;
+        align-items: center;
+    }
+   
+    .survival-scene {
+        height: 300px;
+    }
+   
+    .coffin {
+        width: 150px;
+        height: 225px;
+    }
+   
+    .walking-human {
+        width: 80px;
+        height: 160px;
+    }
+ }
+ 
+ 
+ /* Accessibility */
+ @media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+ }
+ 
+ 
+ /* Page 1 font size boosts */
+ #page1 .title {
+    font-size: 3rem;
+ }
+ 
+ 
+ #page1 label {
+    font-size: 1.5rem;
+ }
+ 
+ 
+ #page1 input[type="text"],
+ #page1 input[type="number"],
+ #page1 input[type="file"],
+ #page1 select {
+    font-size: 1.2rem;
+    padding: 14px;
+ }
+ 
+ 
+ #page1 .radio-group label {
+    font-size: 1.2rem;
+ }
+ 
+ 
+ #page1 .food-category h3 {
+    font-size: 1.3rem;
+ }
+ 
+ 
+ #page1 .food-checkboxes label {
+    font-size: 1.05rem;
+ }
+ 
+ 
+ #page1 .selected-foods {
+    font-size: 1.2rem;
+ }
+ 
+ 
+ #page1 .food-chip {
+    font-size: 1.0rem;
+ }
+ 
+ 
+ #page1 .dagger-btn {
+    font-size: 1.15rem;
+    padding: 18px 34px;
+ }
+ 
+ 
+ /* Focus states for accessibility */
+ input:focus,
+ select:focus,
+ button:focus,
+ input[type="checkbox"]:focus,
+ input[type="radio"]:focus {
+    outline: 2px solid #ff6b6b;
+    outline-offset: 2px;
+ }
+ 
+ 
+ /* Screen reader only text */
+ .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Health Survival Simulation States */
+
+/* Moving state - human moves toward coffin */
+.moving {
+    animation: moveTowardCoffin 2s ease-in-out;
+}
+
+@keyframes moveTowardCoffin {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(60%); }
+}
+
+/* In-coffin state - human inside transparent coffin */
+.in-coffin {
+    opacity: 0.7;
+    filter: blur(1px);
+    transform: scale(0.8);
+    transition: all 0.5s ease;
+}
+
+/* Dead state - only coffin visible, human hidden */
+.dead {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Health message states */
+.health-good {
+    color: #00ff00 !important;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* .health-warning removed (no longer used) */
+
+.health-danger {
+    color: #ff0000 !important;
+    text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+    animation: danger 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* @keyframes warning removed (no longer used) */
+
+@keyframes danger {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+}
+ 

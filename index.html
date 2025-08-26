@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Do or Die</title>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <!-- Background fog effect -->
+   <div class="fog fog1"></div>
+   <div class="fog fog2"></div>
+   <div class="fog fog3"></div>
+
+
+   <!-- Page 1: User Info Form -->
+   <section id="page1" class="page active" data-page="1">
+       <div class="page1-container">
+           <h1 class="title neon-title">Survival Registry</h1>
+           <form id="userForm" class="haunted-form full-bleed-form">
+               <div class="form-group">
+                   <label for="name">Name</label>
+                   <input type="text" id="name" name="name" required>
+               </div>
+
+
+               <div class="form-group">
+                   <label for="photo">Photo </label>
+                   <input type="file" id="photo" name="photo" accept="image/*">
+                   <div id="photoPreview" class="photo-preview"></div>
+               </div>
+
+
+               <div class="form-group">
+                   <label for="age">Age </label>
+                   <input type="number" id="age" name="age" min="1" max="120" required>
+               </div>
+
+
+               <div class="form-group">
+                   <label>Gender </label>
+                   <div class="radio-group">
+                       <label><input type="radio" name="gender" value="male" required> Male</label>
+                       <label><input type="radio" name="gender" value="female" required> Female</label>
+                       <label><input type="radio" name="gender" value="other" required> Other</label>
+                   </div>
+               </div>
+
+
+               <div class="form-group">
+                   <label for="country">Country</label>
+                   <select id="country" name="country" required>
+                       <option value="">select your country</option>
+                   </select>
+               </div>
+
+
+               <div class="form-group">
+                   <label for="state">State</label>
+                   <select id="state" name="state" required disabled>
+                       <option value="">Select your state</option>
+                   </select>
+               </div>
+
+
+               <div class="form-group">
+                   <label for="city">City </label>
+                   <select id="city" name="city" required disabled>
+                       <option value="">Select city</option>
+                   </select>
+               </div>
+
+
+               <div class="form-group">
+                   <label>Feast Selection:</label>
+                   <div class="food-categories">
+                       <div class="food-category">
+                           <h3>Fruits of Life</h3>
+                           <div class="food-checkboxes" id="fruits">
+                               <label><input type="checkbox" name="foods" value="apple"> Apple</label>
+                               <label><input type="checkbox" name="foods" value="banana"> Banana</label>
+                               <label><input type="checkbox" name="foods" value="orange"> Orange</label>
+                               <label><input type="checkbox" name="foods" value="mango"> Mango</label>
+                               <label><input type="checkbox" name="foods" value="grapes"> Grapes</label>
+                               <label><input type="checkbox" name="foods" value="pineapple"> Pineapple</label>
+                               <label><input type="checkbox" name="foods" value="strawberry"> Strawberry</label>
+                               <label><input type="checkbox" name="foods" value="blueberry"> Blueberry</label>
+                               <label><input type="checkbox" name="foods" value="watermelon"> Watermelon</label>
+                           </div>
+                       </div>
+                       <div class="food-category">
+                           <h3>Vegetables of Virtue</h3>
+                           <div class="food-checkboxes" id="vegetables">
+                               <label><input type="checkbox" name="foods" value="spinach"> Spinach</label>
+                               <label><input type="checkbox" name="foods" value="carrot"> Carrot</label>
+                               <label><input type="checkbox" name="foods" value="broccoli"> Broccoli</label>
+                               <label><input type="checkbox" name="foods" value="tomato"> Tomato</label>
+                               <label><input type="checkbox" name="foods" value="lettuce"> Lettuce</label>
+                               <label><input type="checkbox" name="foods" value="kale"> Kale</label>
+                               <label><input type="checkbox" name="foods" value="cauliflower"> Cauliflower</label>
+                               <label><input type="checkbox" name="foods" value="cucumber"> Cucumber</label>
+                               <label><input type="checkbox" name="foods" value="bellpepper"> Bell Pepper</label>
+                               <label><input type="checkbox" name="foods" value="sweetpotato"> Sweet Potato</label>
+                           </div>
+                       </div>
+                       <div class="food-category">
+                           <h3>Healthy Sustenance</h3>
+                           <div class="food-checkboxes" id="healthy">
+                               <label><input type="checkbox" name="foods" value="nuts"> Nuts</label>
+                               <label><input type="checkbox" name="foods" value="yogurt"> Yogurt</label>
+                               <label><input type="checkbox" name="foods" value="oatmeal"> Oatmeal</label>
+                               <label><input type="checkbox" name="foods" value="salmon"> Salmon</label>
+                               <label><input type="checkbox" name="foods" value="quinoa"> Quinoa</label>
+                               <label><input type="checkbox" name="foods" value="avocado"> Avocado</label>
+                               <label><input type="checkbox" name="foods" value="chicken"> Chicken Breast</label>
+                               <label><input type="checkbox" name="foods" value="tofu"> Tofu</label>
+                           </div>
+                       </div>
+                       <div class="food-category">
+                           <h3>Fast Food Sins</h3>
+                           <div class="food-checkboxes" id="fastfood">
+                               <label><input type="checkbox" name="foods" value="pizza"> Pizza</label>
+                               <label><input type="checkbox" name="foods" value="burger"> Burger</label>
+                               <label><input type="checkbox" name="foods" value="fries"> Fries</label>
+                               <label><input type="checkbox" name="foods" value="hotdog"> Hot Dog</label>
+                               <label><input type="checkbox" name="foods" value="friedchicken"> Fried Chicken</label>
+                               <label><input type="checkbox" name="foods" value="taco"> Taco</label>
+                               <label><input type="checkbox" name="foods" value="nuggets"> Nuggets</label>
+                           </div>
+                       </div>
+                       <div class="food-category">
+                           <h3>Junk of Doom</h3>
+                           <div class="food-checkboxes" id="junk">
+                               <label><input type="checkbox" name="foods" value="chips"> Chips</label>
+                               <label><input type="checkbox" name="foods" value="soda"> Soda</label>
+                               <label><input type="checkbox" name="foods" value="candy"> Candy</label>
+                               <label><input type="checkbox" name="foods" value="cookies"> Cookies</label>
+                               <label><input type="checkbox" name="foods" value="icecream"> Ice Cream</label>
+                               <label><input type="checkbox" name="foods" value="doughnut"> Doughnut</label>
+                               <label><input type="checkbox" name="foods" value="chocolate"> Chocolate Bar</label>
+                               <label><input type="checkbox" name="foods" value="energydrink"> Energy Drink</label>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+
+               <div class="selected-foods" id="selectedFoods"></div>
+
+
+               <button type="submit" class="dagger-btn">
+                   ⚔️ Seal Your Fate
+               </button>
+           </form>
+       </div>
+   </section>
+
+
+   <!-- Page 2: User Summary -->
+   <section id="page2" class="page" data-page="2">
+       <div class="summary-layout">
+           <div class="human-container">
+               <!-- Fallback human image shown until 3D is ready -->
+               <div id="humanFigure" class="human-figure" aria-hidden="false">
+                   <svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg">
+                       <circle cx="50" cy="25" r="15" fill="#fff" opacity="0.95"/>
+                       <rect x="40" y="40" width="20" height="60" rx="5" fill="#fff" opacity="0.95"/>
+                       <rect x="30" y="45" width="15" height="40" rx="5" fill="#fff" opacity="0.95"/>
+                       <rect x="55" y="45" width="15" height="40" rx="5" fill="#fff" opacity="0.95"/>
+                       <rect x="40" y="100" width="8" height="60" rx="5" fill="#fff" opacity="0.95"/>
+                       <rect x="52" y="100" width="8" height="60" rx="5" fill="#fff" opacity="0.95"/>
+                       <circle cx="45" cy="170" r="8" fill="#fff" opacity="0.95"/>
+                       <circle cx="55" cy="170" r="8" fill="#fff" opacity="0.95"/>
+                   </svg>
+               </div>
+               <div id="threeSceneSummary" aria-label="3D summary human" style="width: 100%; height: 100%;"></div>
+           </div>
+           <div class="summary-scroll">
+               <div class="scroll-content" id="summaryContent">
+                   <h2>Soul's Final Record</h2>
+                   <div id="userSummary"></div>
+               </div>
+           </div>
+       </div>
+       <div class="navigation">
+           <button id="backBtn" class="broken-arrow">Return</button>
+           <button id="checkNutritionBtn" class="skull-btn">Check Your Survival</button>
+       </div>
+   </section>
+
+
+   <!-- Page 3: Nutrition Results -->
+   <section id="page3" class="page" data-page="3">
+      <!-- 3D Slider Container (anchor for 3D scene) -->
+      <div class="survival-slider-wrap" style="width: 100%; max-width: 900px; margin: 10px auto 1rem auto;">
+          <div id="threeScene" aria-label="3D scene" style="width: 100%; height: 200px;"></div>
+      </div>
+      <div class="results-scroll" id="resultsScroll">
+          <div class="scroll-content">
+              <h2>Survival Prophecy</h2>
+              <div id="survivalResults"></div>
+          </div>
+      </div>
+
+      <!-- removed bottom visual duplicate slider -->
+      <div class="navigation">
+          <button id="editFoodsBtn" class="ghost-arrow">Edit Foods</button>
+          <button id="resetBtn" class="bloody-cross">Reset All</button>
+      </div>
+   </section>
+
+
+   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+   <script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+   <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+   <script src="script.js"></script>
+</body>
+</html>
